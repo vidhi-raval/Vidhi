@@ -1,7 +1,12 @@
-package com.example.apicallingdemo.apiCalling.model
+package com.example.apicallingdemo.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity (tableName = "Repository")
 data class Repository(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val node_id: String,
     val name: String,
     val full_name: String,
@@ -12,7 +17,8 @@ data class Repository(
     val forks_count: Int,
     val watchers: Int,
     var isExpanded: Boolean = false,
-    val owner: Owner
+    val owner: Owner,
+    val lastFetched: Long
 )
 
 data class Owner(

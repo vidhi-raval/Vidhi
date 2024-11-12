@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+//    alias(libs.plugins.kotlin.ksp)
+
 }
 
 android {
@@ -66,6 +69,17 @@ dependencies {
 
     //shimmer layout
     implementation (libs.shimmer)
+
+    //room database
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+//    ksp(libs.androidx.room.compiler)
+    kapt("androidx.room:room-compiler:2.6.1")
+//    kapt("androidx.room:room-compiler:2.6.1")
+
+    //work manager
+    implementation (libs.androidx.work.runtime.ktx)
+
 
 
     testImplementation(libs.junit)

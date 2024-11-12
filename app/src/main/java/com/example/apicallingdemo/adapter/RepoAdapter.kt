@@ -4,44 +4,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apicallingdemo.apiCalling.model.Repository
+import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.databinding.LayoutItemRepositoryBinding
 
 class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<RepoAdapter.RepositoryViewHolder>() {
 
     private var expandedPosition = -1
 
-//    inner class RepositoryViewHolder(val mBinding: LayoutItemRepositoryBinding) : RecyclerView.ViewHolder(mBinding.root)
-
+    fun updateData(newRepositories: List<Repository>) {
+        repoList.clear()
+        repoList.addAll(newRepositories)
+        notifyDataSetChanged()
+    }
     inner class RepositoryViewHolder(private val binding: LayoutItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Repository, position: Int) {
+
             binding.tvTitle.text = item.name
             binding.tvDesc.text = item.description
             binding.tvStargazersCount.text = item.stargazers_count.toString()
             binding.tvWatchersCount.text = item.watchers_count.toString()
 
-            // Toggle visibility based on expanded state
             binding.ivStar.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
             binding.tvStargazersCount.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
             binding.ivFork.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
             binding.tvWatchersCount.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
 
             binding.root.setOnClickListener {
-                // Check if this item is already expanded
                 if (expandedPosition == position) {
                     item.isExpanded = false
-                    expandedPosition = -1  // Collapse the item
+                    expandedPosition = -1
                 } else {
-                    // Collapse the currently expanded item if any
                     if (expandedPosition >= 0) {
                         repoList[expandedPosition].isExpanded = false
                         notifyItemChanged(expandedPosition)
                     }
-                    // Expand the clicked item
                     item.isExpanded = true
                     expandedPosition = position
                 }
-                notifyItemChanged(position)  // Update the clicked item
+                notifyItemChanged(position)
             }
         }
     }

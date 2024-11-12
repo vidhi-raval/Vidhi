@@ -1,6 +1,6 @@
 package com.example.apicallingdemo.apiCalling
 
-import com.example.apicallingdemo.apiCalling.model.RepositoryResponse
+import com.example.apicallingdemo.model.RepositoryResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,8 +27,7 @@ interface GitHubApiService {
     @GET("search/repositories")
     fun getTrendingRepositories(
         @Query("q") query: String = "stars:>1000", // Query for repositories with more than 1000 stars
-        @Query("sort") sort: String = "stars",     // Sorting by stars
-        @Query("order") order: String = "desc"     // Order descending
+        @Query("sort") sort: String = "stars"     // Sorting by stars
     ): Call<RepositoryResponse>
 
 
