@@ -17,7 +17,7 @@ interface RepositoryDao {
      fun insertAll(repositories: List<Repository>)
 
     @Query("DELETE FROM Repository")
-    suspend fun deleteAll()
+     fun deleteAll()
 
     // Fetch the timestamp of the latest cached repository item
     @Query("SELECT lastFetched FROM Repository LIMIT 1")

@@ -6,11 +6,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.databinding.LayoutItemRepositoryBinding
+import com.example.apicallingdemo.databinding.ShimmerLayoutBinding
 
-class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<RepoAdapter.RepositoryViewHolder>() {
+class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var expandedPosition = -1
+    private var isLoading = true
 
+    companion object {
+        private const val VIEW_TYPE_SHIMMER = 0
+        private const val VIEW_TYPE_DATA = 1
+    }
+
+    fun setLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
+        notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (isLoading) VIEW_TYPE_SHIMMER else VIEW_TYPE_DATA
+    }
     fun updateData(newRepositories: List<Repository>) {
         repoList.clear()
         repoList.addAll(newRepositories)
@@ -45,18 +60,29 @@ class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<Rep
             }
         }
     }
+    inner class ShimmerViewHolder(private val binding: ShimmerLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        val binding = LayoutItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RepositoryViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_SHIMMER) {
+            val binding = ShimmerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ShimmerViewHolder(binding)
+
+        } else {
+            val binding = LayoutItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            RepositoryViewHolder(binding)
+        }
     }
+
 
     override fun getItemCount(): Int {
-        return repoList.size
+         return if (isLoading) 29 else repoList.size
     }
 
-    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(repoList[position], position)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is RepositoryViewHolder && !isLoading) {
+            holder.bind(repoList[position], position)
+        }
     }
+
 }

@@ -24,7 +24,7 @@ class RepositoryViewModel: ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
 
-    fun fetchRepositories() {
+   /* fun fetchRepositories() {
         if (_isLoading.value == true) return
         _isLoading.value = true
         ApiClient.apiService.getTrendingRepositories().enqueue(object :
@@ -44,5 +44,5 @@ class RepositoryViewModel: ViewModel() {
                 _error.value = t.message
             }
         })
-    }
+    }*/
 }

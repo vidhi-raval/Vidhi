@@ -1,56 +1,72 @@
 package com.example.apicallingdemo.workManager
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.apicallingdemo.apiCalling.ApiClient
+import com.example.apicallingdemo.database.RepositoryDao
 import com.example.apicallingdemo.database.RepositoryDatabase
 import com.example.apicallingdemo.model.Repository
+import com.example.apicallingdemo.model.RepositoryResponse
+import com.example.apicallingdemo.utils.isOnline
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
-class FetchRepositoriesWorker(private val context: Context, workerParams: WorkerParameters): CoroutineWorker(context, workerParams) {
+class FetchRepositoriesWorker(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val TAG = javaClass.simpleName
 
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> get() = _error
+    private lateinit var repoDatabase: RepositoryDatabase
+    private lateinit var repoDao: RepositoryDao
+    private var updatedRepoList = ArrayList<Repository>()
 
     override suspend fun doWork(): Result {
-        _isLoading.value = true
-        val service = ApiClient.apiService
-        val response = service.getTrendingRepositories().execute()
+        repoDatabase = RepositoryDatabase.getInstance(context)
+        repoDao = repoDatabase.repositoryDao()
 
-                return if (response.isSuccessful) {
-                    _isLoading.value = false
-                    val repositories = response.body()?.items?.map {
-                        Repository(
-                            id = it.id,
-                            node_id = it.node_id,
-                            name = it.name,
-                            full_name = it.full_name,
-                            html_url = it.html_url,
-                            description = it.description,
-                            stargazers_count = it.stargazers_count,
-                            watchers_count = it.watchers_count,
-                            forks_count = it.forks_count,
-                            watchers = it.watchers,
-                            isExpanded = it.isExpanded,
-                            owner = it.owner,
-                            lastFetched = System.currentTimeMillis() // Current time in milliseconds
-                        )
-                    } ?: emptyList()
+        return if (isOnline(context)) {
 
-                    val repositoryDao = RepositoryDatabase.getInstance(context).repositoryDao()
-                    repositoryDao.insertAll(repositories)
+            val oldRepoList = repoDao.getAllRepositories().value ?: emptyList()
 
-                    Result.success()
+            if (oldRepoList.isEmpty()) {
+                if (fetchRepositories()) {
+                    repoDao.insertAll(updatedRepoList)
+                    Log.e(TAG, "doWork: data inserted successfully...", )
                 } else {
-                    _isLoading.value = false
-                    _error.value = response.message()
-                    Result.failure()
+                    Log.e(TAG, "doWork: Error fetching data...", )
                 }
+            }else {
+                Log.e(TAG, "doWork: data updated successfully...", )
+                repoDao.deleteAll()
+                repoDao.insertAll(updatedRepoList)
+            }
+            Result.success()
+        } else {
+            Log.e(TAG, "doWork: Check internet connection...")
+            Result.retry()
+        }
+    }
+
+    private suspend fun fetchRepositories(): Boolean {
+        return try {
+            val response = ApiClient.apiService.getTrendingRepositories().execute()
+            if (response.isSuccessful) {
+                updatedRepoList.clear()
+                updatedRepoList.addAll(response.body()?.items ?: emptyList())
+                true
+            } else {
+                Log.e(TAG, "fetchRepositories: Error fetching data")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "fetchRepositories: Exception occurred", e)
+            false
+        }
     }
 }
