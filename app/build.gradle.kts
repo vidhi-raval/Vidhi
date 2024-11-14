@@ -80,6 +80,13 @@ dependencies {
     //work manager
     implementation (libs.androidx.work.runtime.ktx)
 
+    //circular imageview
+    implementation (libs.circleimageview)
+
+    //glide
+    implementation (libs.glide.v4110)
+    annotationProcessor (libs.compiler.v4110)
+
 
 
     testImplementation(libs.junit)

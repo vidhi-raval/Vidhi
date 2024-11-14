@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.apicallingdemo.model.Contributor
 import com.example.apicallingdemo.model.Repository
 
 @Dao
@@ -22,4 +23,7 @@ interface RepositoryDao {
     // Fetch the timestamp of the latest cached repository item
     @Query("SELECT lastFetched FROM Repository LIMIT 1")
     suspend fun getLatestTimestamp(): Long?
+
+    @Query("SELECT contributors_url FROM Repository ORDER BY id")
+    fun getAllContributors():String
 }

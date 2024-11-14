@@ -1,6 +1,5 @@
 package com.example.apicallingdemo.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +10,7 @@ data class Repository(
     val name: String,
     val full_name: String,
     val html_url: String,
+    val contributors_url: String,
     val description: String?,
     val stargazers_count: Int,
     val watchers_count: Int,
@@ -28,4 +28,9 @@ data class Owner(
 
 data class RepositoryResponse(
     val items: List<Repository>
+)
+
+data class Contributor(
+    val id: Int,
+    val avatar_url: String,
 )

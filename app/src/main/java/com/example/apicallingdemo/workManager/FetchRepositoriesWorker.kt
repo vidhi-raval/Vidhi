@@ -2,20 +2,13 @@ package com.example.apicallingdemo.workManager
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.apicallingdemo.apiCalling.ApiClient
 import com.example.apicallingdemo.database.RepositoryDao
 import com.example.apicallingdemo.database.RepositoryDatabase
 import com.example.apicallingdemo.model.Repository
-import com.example.apicallingdemo.model.RepositoryResponse
 import com.example.apicallingdemo.utils.isOnline
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class FetchRepositoriesWorker(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
@@ -39,12 +32,16 @@ class FetchRepositoriesWorker(private val context: Context, workerParams: Worker
                     repoDao.insertAll(updatedRepoList)
                     Log.e(TAG, "doWork: data inserted successfully...", )
                 } else {
-                    Log.e(TAG, "doWork: Error fetching data...", )
+                    Log.e(TAG, "doWork:data not available in db: Error fetching data...", )
                 }
-            }else {
-                Log.e(TAG, "doWork: data updated successfully...", )
-                repoDao.deleteAll()
-                repoDao.insertAll(updatedRepoList)
+            } else {
+                if (fetchRepositories()) {
+                    repoDao.deleteAll()
+                    repoDao.insertAll(updatedRepoList)
+                    Log.e(TAG, "doWork: data updated successfully...", )
+                } else {
+                    Log.e(TAG, "doWork:data available in db: Error fetching data...", )
+                }
             }
             Result.success()
         } else {

@@ -1,17 +1,33 @@
 package com.example.apicallingdemo.adapter
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apicallingdemo.apiCalling.ApiClient
+import com.example.apicallingdemo.database.RepositoryDatabase
 import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.databinding.LayoutItemRepositoryBinding
 import com.example.apicallingdemo.databinding.ShimmerLayoutBinding
+import com.example.apicallingdemo.model.Contributor
+import com.example.apicallingdemo.utils.isOnline
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, var fetchContributors:(url:String)->Unit*/): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var expandedPosition = -1
     private var isLoading = true
+    private var contributorsList = ArrayList<Contributor>()
+    private var TAG = javaClass.simpleName
+    var repoDatabase = RepositoryDatabase.getInstance(mContext)
+    var repoDao = repoDatabase.repositoryDao()
 
     companion object {
         private const val VIEW_TYPE_SHIMMER = 0
@@ -33,7 +49,6 @@ class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<Rec
     }
     inner class RepositoryViewHolder(private val binding: LayoutItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Repository, position: Int) {
-
             binding.tvTitle.text = item.name
             binding.tvDesc.text = item.description
             binding.tvStargazersCount.text = item.stargazers_count.toString()
@@ -43,6 +58,7 @@ class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<Rec
             binding.tvStargazersCount.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
             binding.ivFork.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
             binding.tvWatchersCount.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
+            binding.rvContributorsList.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
 
             binding.root.setOnClickListener {
                 if (expandedPosition == position) {
@@ -55,6 +71,16 @@ class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<Rec
                     }
                     item.isExpanded = true
                     expandedPosition = position
+                }
+                Log.e(TAG, "bind: url:${item.contributors_url}", )
+                fetchContributors(item.contributors_url) {responce ->
+                    if(responce) {
+                        binding.rvContributorsList.layoutManager = LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false)
+                        binding.rvContributorsList.adapter = ContributorsAdapter(mContext,contributorsList)
+                    } else {
+                        Log.e(TAG, "bind:error in loading data... ", )
+                        binding.rvContributorsList.visibility = View.GONE
+                    }
                 }
                 notifyItemChanged(position)
             }
@@ -83,6 +109,57 @@ class RepoAdapter(var repoList: ArrayList<Repository>): RecyclerView.Adapter<Rec
         if (holder is RepositoryViewHolder && !isLoading) {
             holder.bind(repoList[position], position)
         }
+    }
+   /* private fun fetchContributors(contributorsUrl: String): Boolean {
+        return try {
+            val response = ApiClient.apiService.getContributorsList(contributorsUrl).execute()
+            if (response.isSuccessful) {
+                contributorsList.clear()
+                contributorsList.addAll(response.body()?.contributorsItem?: emptyList())
+                true
+            } else {
+                Log.e(TAG, "fetchContributors: Error fetching data")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "fetchContributors: Exception occurred", e)
+            false
+        }
+    }*/
+
+        private fun fetchContributors(contributorsUrl: String, callback: (Boolean) -> Unit) {
+            ApiClient.apiService.getContributorsList(contributorsUrl).enqueue(object :
+                Callback<List<Contributor>> {
+                override fun onResponse(call: Call<List<Contributor>>, response: Response<List<Contributor>>) {
+                    if (response.isSuccessful) {
+    //                    contributorsList.addAll(response.body()?.contributorsItem ?: emptyList())
+
+//                        var contributorJson = repoDao.getAllContributors()
+
+                        response.body()?.let { contributors ->
+                            contributorsList.clear()
+                            contributorsList.addAll(contributors)
+
+                            Log.e(TAG, "onResponse: contributorsList:${contributorsList}", )
+                            callback(true)
+                        }
+                    } else {
+                        Log.e(TAG, "fetchContributors: Error fetching data:error:${response.errorBody()?.string()}")
+                        callback(false)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Contributor>>, t: Throwable) {
+                    Log.e(TAG, "fetchContributors: Exception occurred", t)
+                    callback(false) // Failure
+                }
+            })
+        }
+
+    fun getContributorsFromRepository(json: String): ArrayList<Contributor> {
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<Contributor>>() {}.type
+        return gson.fromJson(json, type)
     }
 
 }

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         repoDao = repoDatabase.repositoryDao()
 
         mBinding.rvTrendingList.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        repoAdapter = RepoAdapter(ArrayList())
+        repoAdapter = RepoAdapter(this,ArrayList())
         mBinding.rvTrendingList.adapter = repoAdapter
 
         getData()
@@ -82,12 +82,15 @@ class MainActivity : AppCompatActivity() {
     private fun getData() {
         repoDao.getAllRepositories().observe(this) { repoListFromDb ->
             if (repoListFromDb.isNullOrEmpty()) {
+                Log.e(TAG, "getData: data not available in db...", )
                 mBinding.swipeRefreshLayout.setOnRefreshListener {
                     if (isOnline(this)) {
+                        Log.e(TAG, "getData: data not available in db:swipe:online...", )
                         mBinding.swipeRefreshLayout.isRefreshing = true
                         scheduleWork()
                         repoAdapter.setLoading(false)
                     } else {
+                        Log.e(TAG, "getData: data not available in db:swipe:offline...", )
                         mBinding.swipeRefreshLayout.visibility = View.GONE
                         mBinding.idLayoutNoInternet.root.visibility = View.VISIBLE
                         repoAdapter.setLoading(true)
@@ -96,25 +99,31 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 if (isOnline(this)) {
+                    Log.e(TAG, "getData: data not available in db:online...", )
                     mBinding.swipeRefreshLayout.isRefreshing = true
                     scheduleWork()
                     repoAdapter.setLoading(false)
                 } else {
                     //show shimmer
+                    Log.e(TAG, "getData: data not available in db:offline...", )
                     repoAdapter.setLoading(true)
                     mBinding.swipeRefreshLayout.isRefreshing = false
                     Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
                 }
             } else {
+                Log.e(TAG, "getData: data available in db...", )
                 mBinding.swipeRefreshLayout.setOnRefreshListener {
                     if (isOnline(this)) {
+                        Log.e(TAG, "getData: data available in db:swipe:online...", )
                         repoAdapter.updateData(repoListFromDb)
                         mBinding.swipeRefreshLayout.isRefreshing = false
                     } else {
+                        Log.e(TAG, "getData: data available in db:swipe:offline...", )
                         Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
                         mBinding.swipeRefreshLayout.isRefreshing = false
                     }
                 }
+                repoAdapter.setLoading(false)
                 repoAdapter.updateData(repoListFromDb)
                 mBinding.swipeRefreshLayout.isRefreshing = false
             }
