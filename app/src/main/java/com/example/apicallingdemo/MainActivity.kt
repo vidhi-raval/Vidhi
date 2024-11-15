@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.View
@@ -22,15 +24,16 @@ import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.utils.isOnline
 import com.example.apicallingdemo.workManager.FetchRepositoriesWorker
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mBinding:ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
     private lateinit var repoAdapter: RepoAdapter
-//    private lateinit var viewModel: RepositoryViewModel
     private lateinit var repoDatabase: RepositoryDatabase
     private lateinit var repoDao: RepositoryDao
+    private var repoList = ArrayList<Repository>()
     var TAG = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +42,10 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-//        viewModel = ViewModelProvider(this)[RepositoryViewModel::class.java]
-
-        repoDatabase = RepositoryDatabase.getInstance(this@MainActivity)
+        repoDatabase = RepositoryDatabase.getInstance(this)
         repoDao = repoDatabase.repositoryDao()
 
-        mBinding.rvTrendingList.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        repoAdapter = RepoAdapter(this,ArrayList())
+        repoAdapter = RepoAdapter(this, ArrayList())
         mBinding.rvTrendingList.adapter = repoAdapter
 
         getData()
@@ -58,150 +58,107 @@ class MainActivity : AppCompatActivity() {
             }, 3000)
         }
 
-        /*repoDao.getAllRepositories().observe(this) { repoListFromDb ->
-            if (repoListFromDb.isNullOrEmpty()) {
-                Log.e(TAG, "onCreate: Database is empty, calling API...")
-//                observeViewModel()
-                if(isOnline(this)) {
-                    viewModel.scheduleWork()
-                } else {
-                    Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Log.e(TAG, "onCreate: Database is not empty")
-                repoAdapter.updateData(repoListFromDb)
+        mBinding.ivSearch.setOnClickListener {
+            mBinding.layoutForSearchId.root.visibility = View.VISIBLE
+            mBinding.tvTitle.visibility = View.INVISIBLE
+            mBinding.ivSearch.visibility = View.GONE
+        }
+
+        mBinding.layoutForSearchId.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(repo: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                filter(repo.toString())
             }
-        }
-        mBinding.swipeRefreshLayout.setOnRefreshListener {
-            mBinding.swipeRefreshLayout.isRefreshing = false
-           viewModel.fetchRepositories()
-        }
-        viewModel.fetchRepositories()*/
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
     }
 
     private fun getData() {
         repoDao.getAllRepositories().observe(this) { repoListFromDb ->
             if (repoListFromDb.isNullOrEmpty()) {
-                Log.e(TAG, "getData: data not available in db...", )
-                mBinding.swipeRefreshLayout.setOnRefreshListener {
-                    if (isOnline(this)) {
-                        Log.e(TAG, "getData: data not available in db:swipe:online...", )
-                        mBinding.swipeRefreshLayout.isRefreshing = true
-                        scheduleWork()
-                        repoAdapter.setLoading(false)
-                    } else {
-                        Log.e(TAG, "getData: data not available in db:swipe:offline...", )
-                        mBinding.swipeRefreshLayout.visibility = View.GONE
-                        mBinding.idLayoutNoInternet.root.visibility = View.VISIBLE
-                        repoAdapter.setLoading(true)
-                        mBinding.swipeRefreshLayout.isRefreshing = false
-                        Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Log.e(TAG, "getData: data not available in db...")
+                handleSwipeRefresh(true)
+
                 if (isOnline(this)) {
-                    Log.e(TAG, "getData: data not available in db:online...", )
+                    Log.e(TAG, "getData: data not available in db: online...")
                     mBinding.swipeRefreshLayout.isRefreshing = true
                     scheduleWork()
                     repoAdapter.setLoading(false)
                 } else {
-                    //show shimmer
-                    Log.e(TAG, "getData: data not available in db:offline...", )
-                    repoAdapter.setLoading(true)
-                    mBinding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
+                    handleNoInternet()
                 }
             } else {
-                Log.e(TAG, "getData: data available in db...", )
-                mBinding.swipeRefreshLayout.setOnRefreshListener {
-                    if (isOnline(this)) {
-                        Log.e(TAG, "getData: data available in db:swipe:online...", )
-                        repoAdapter.updateData(repoListFromDb)
-                        mBinding.swipeRefreshLayout.isRefreshing = false
-                    } else {
-                        Log.e(TAG, "getData: data available in db:swipe:offline...", )
-                        Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
-                        mBinding.swipeRefreshLayout.isRefreshing = false
-                    }
-                }
-                repoAdapter.setLoading(false)
+                Log.e(TAG, "getData: data available in db...")
+                repoList.addAll(repoListFromDb)
+                handleSwipeRefresh(false)
                 repoAdapter.updateData(repoListFromDb)
                 mBinding.swipeRefreshLayout.isRefreshing = false
             }
         }
     }
 
-    /*
-        private fun observeViewModel() {
-            viewModel.repositories.observe(this) { repositories ->
-                repoAdapter.updateData(repositories)
-                //add data to db
-                insertRepositories(repositories)
-            }
-
-            viewModel.isLoading.observe(this) { isLoading ->
-                mBinding.swipeRefreshLayout.isRefreshing = isLoading
-            }
-
-            viewModel.error.observe(this) { errorMessage ->
-                errorMessage?.let {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+    private fun handleSwipeRefresh(isEmpty: Boolean) {
+        mBinding.swipeRefreshLayout.setOnRefreshListener {
+            if (isOnline(this)) {
+                if (isEmpty) {
+                    scheduleWork()
+                    repoAdapter.setLoading(false)
+                } else {
+                    repoAdapter.updateData(repoList)
                 }
+            } else {
+                handleNoInternet()
             }
+            mBinding.swipeRefreshLayout.isRefreshing = false
         }
-    */
-
-    private fun insertRepositories(repositories: List<Repository>) {
-        lifecycleScope.launch {
-            repoDao.insertAll(repositories)
-        }
-        Log.e(TAG, "insertRepositories: data inserted successfully in db... ", )
     }
-   /* private fun callApi() {
-        if (isOnline(this)) {
-            val call = ApiClient.apiService.getTrendingRepositories()
 
-            call.enqueue(object : Callback<RepositoryResponse> {
-                override fun onResponse(
-                    call: Call<RepositoryResponse>,
-                    response: Response<RepositoryResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@MainActivity, "Successful", Toast.LENGTH_SHORT).show()
-                        val repositories = response.body()?.items ?: emptyList()
-                        repoAdapter = RepoAdapter(repositories as ArrayList)
-                        mBinding.rvTrendingList.adapter = repoAdapter
-                        Log.e("DEMOO", "onResponse:$repositories ")
-
-                    } else {
-                        Toast.makeText(this@MainActivity, "error", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<RepositoryResponse>, t: Throwable) {
-                    Log.e("DEMOO", "onFailure:error:${t.message} ")
-
-                }
-
-            })
-        } else {
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show()
-        }
-
-    }*/
+    private fun handleNoInternet() {
+        Log.e(TAG, "getData: no internet...")
+        mBinding.swipeRefreshLayout.visibility = View.GONE
+        mBinding.idLayoutNoInternet.root.visibility = View.VISIBLE
+        repoAdapter.setLoading(true)
+        Toast.makeText(this, "Check your internet...", Toast.LENGTH_SHORT).show()
+    }
 
     private fun scheduleWork() {
-        Log.e(TAG, "doWork: start working...", )
-//        startLoggingEveryMinute()
-        val workRequest = PeriodicWorkRequestBuilder<FetchRepositoriesWorker>(15, TimeUnit.MINUTES).build()
+        Log.e(TAG, "scheduleWork: start working...")
+        val workRequest = PeriodicWorkRequestBuilder<FetchRepositoriesWorker>(2, TimeUnit.HOURS).build()
         WorkManager.getInstance(this).enqueue(workRequest)
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(workRequest.id).observe(this) { workInfo ->
             if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
-                Log.e(TAG, "scheduleWork:workInfo.state:${workInfo.state} ", )
-                Log.e(TAG, "scheduleWork:workInfo:${workInfo} ", )
+                Log.e(TAG, "scheduleWork: Success!")
             }
         }
     }
+
+    private fun filter(text: String) {
+        val filteredList = repoList.filter {
+            it.name.contains(text, ignoreCase = true)
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show()
+        } else {
+            repoAdapter.filterList(ArrayList(filteredList))
+        }
+    }
+
+    override fun onBackPressed() {
+        if (mBinding.layoutForSearchId.root.visibility == View.VISIBLE) {
+            mBinding.layoutForSearchId.etSearch.setText("")
+            getData()
+            mBinding.layoutForSearchId.root.visibility = View.GONE
+            mBinding.tvTitle.visibility = View.VISIBLE
+            mBinding.ivSearch.visibility = View.VISIBLE
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
+
 
 

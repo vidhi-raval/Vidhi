@@ -1,6 +1,7 @@
 package com.example.apicallingdemo.apiCalling
 
-import com.example.apicallingdemo.model.Contributor
+import com.example.apicallingdemo.apiCalling.ApiClient.apiService
+import com.example.apicallingdemo.model.Contributors
 import com.example.apicallingdemo.model.RepositoryResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -32,7 +33,8 @@ interface GitHubApiService {
         @Query("sort") sort: String = "stars"     // Sorting by stars
     ): Call<RepositoryResponse>
 
-    @GET
-    fun getContributorsList(@Url contributorsUrl: String): Call<List<Contributor>>
+//    suspend fun getContributors(@Url url: String): List<Contributors>
 
+    @GET
+    fun getContributorsList(@Url contributorsUrl: String): Call<List<Contributors>>
 }

@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.apicallingdemo.R
 import com.example.apicallingdemo.databinding.LayoutContributorsListBinding
-import com.example.apicallingdemo.databinding.LayoutItemRepositoryBinding
-import com.example.apicallingdemo.databinding.ShimmerLayoutBinding
-import com.example.apicallingdemo.model.Contributor
+import com.example.apicallingdemo.model.Contributors
 
-class ContributorsAdapter(private var context: Context, private var contributorsList:ArrayList<Contributor>): RecyclerView.Adapter<ContributorsAdapter.ViewHolder>() {
+class ContributorsAdapter(private var context: Context, private var contributorsList:ArrayList<Contributors>): RecyclerView.Adapter<ContributorsAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: LayoutContributorsListBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -28,7 +25,7 @@ class ContributorsAdapter(private var context: Context, private var contributors
         with(holder){
             with(contributorsList[position]){
                 Glide.with(context)
-                    .load(this.avatar_url).into(binding.ivContributors)
+                    .load(avatar_url).into(binding.ivContributors)
 
             }
         }

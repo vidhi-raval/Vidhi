@@ -50,7 +50,7 @@ class FetchRepositoriesWorker(private val context: Context, workerParams: Worker
         }
     }
 
-    private suspend fun fetchRepositories(): Boolean {
+    private fun fetchRepositories(): Boolean {
         return try {
             val response = ApiClient.apiService.getTrendingRepositories().execute()
             if (response.isSuccessful) {

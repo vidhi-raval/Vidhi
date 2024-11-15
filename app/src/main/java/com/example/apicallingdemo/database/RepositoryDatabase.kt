@@ -9,11 +9,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
+import com.example.apicallingdemo.model.Contributors
 import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.utils.Converters
 
 
-@Database(entities = [Repository::class], version = 1)
+@Database(entities = [Repository::class, Contributors::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class RepositoryDatabase: RoomDatabase() {
     abstract fun repositoryDao(): RepositoryDao
