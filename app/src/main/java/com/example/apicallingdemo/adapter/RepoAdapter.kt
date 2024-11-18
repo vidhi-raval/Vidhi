@@ -116,40 +116,6 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
         }
     }
 
-     /*   private fun fetchContributors(id:Int,contributorsUrl: String, callback: (Boolean) -> Unit) {
-
-            ApiClient.apiService.getContributorsList(contributorsUrl).enqueue(object : Callback<List<Contributors>> {
-                override fun onResponse(
-                    call: Call<List<Contributors>>,
-                    response: Response<List<Contributors>>
-                ) {
-                    if (response.isSuccessful) {
-                       response.body()?.let { contributorsList ->
-                           mContributorsList.clear()
-                           mContributorsList.addAll(contributorsList)
-                           for (contributor in contributorsList) {
-                               CoroutineScope(Dispatchers.IO).launch {
-                                   val existingContributorInDB = repoDao.getContributor(id)
-                                   if (existingContributorInDB == null) {
-                                       repoDao.insertContributor(contributor)
-                                   }
-                               }
-                           }
-                       }
-                        callback(true)
-                    } else {
-                        Log.e(TAG, "onResponse: response faild:${response.errorBody()?.string()}", )
-                        callback(false)
-                    }
-                }
-
-                override fun onFailure(call: Call<List<Contributors>>, t: Throwable) {
-                    Log.e(TAG, "onFailure: api calling faild:${t.message}", )
-                    callback(false)
-                }
-            })
-        }*/
-
     fun fetchContributors(id: Int, contributorsUrl: String, callback: (Boolean) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val cachedContributors = repoDao.getContributorsForRepo(id)

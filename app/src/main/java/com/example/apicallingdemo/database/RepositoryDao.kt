@@ -23,8 +23,6 @@ interface RepositoryDao {
     @Query("SELECT * FROM contributors WHERE repoId = :repoId")
     suspend fun getContributorsForRepo(repoId: Int): List<Contributors>
 
-  /*  @Query("SELECT * FROM contributors WHERE id = :contributorId")
-    suspend fun getContributor(contributorId: Int): Contributors?*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertContributor(contributor: Contributors)
