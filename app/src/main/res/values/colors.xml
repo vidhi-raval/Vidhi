@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="shimmer_placeholder">#807B7A</color>
+    <color name="shimmer_bg_color">#454545</color>
 </resources>

@@ -14,7 +14,7 @@ import com.example.apicallingdemo.model.Repository
 import com.example.apicallingdemo.utils.Converters
 
 
-@Database(entities = [Repository::class, Contributors::class], version = 1)
+@Database(entities = [Repository::class, Contributors::class], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class RepositoryDatabase: RoomDatabase() {
     abstract fun repositoryDao(): RepositoryDao

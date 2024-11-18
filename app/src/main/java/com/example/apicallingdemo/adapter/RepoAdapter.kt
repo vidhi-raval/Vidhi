@@ -52,16 +52,19 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
     }
     inner class RepositoryViewHolder(private val binding: LayoutItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Repository, position: Int) {
-            binding.tvTitle.text = item.name
+            binding.tvName.text = item.name
+            binding.tvFullName.text = item.fullName
             binding.tvDesc.text = item.description
-            binding.tvStargazersCount.text = item.stargazers_count.toString()
-            binding.tvWatchersCount.text = item.watchers_count.toString()
+            binding.tvStargazersCount.text = item.stargazersCount.toString()
+            binding.tvWatchersCount.text = item.watchersCount.toString()
 
-            binding.ivStar.isVisible = item.isExpanded
-            binding.tvStargazersCount.isVisible = item.isExpanded
-            binding.ivFork.isVisible = item.isExpanded
-            binding.tvWatchersCount.isVisible = item.isExpanded
-            binding.rvContributorsList.isVisible = item.isExpanded
+            binding.clExpandLayout.isVisible = item.isExpanded
+
+//            binding.ivStar.isVisible = item.isExpanded
+//            binding.tvStargazersCount.isVisible = item.isExpanded
+//            binding.ivFork.isVisible = item.isExpanded
+//            binding.tvWatchersCount.isVisible = item.isExpanded
+//            binding.rvContributorsList.isVisible = item.isExpanded
 
             if (item.isExpanded && mContributorsList.isNotEmpty()) {
                 binding.rvContributorsList.adapter = ContributorsAdapter(mContext, mContributorsList)
@@ -79,8 +82,8 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
                     item.isExpanded = true
                     expandedPosition = position
                 }
-                Log.e(TAG, "bind: url:${item.contributors_url}", )
-                fetchContributors(item.id,item.contributors_url) {responce ->
+                Log.e(TAG, "bind: url:${item.contributorsUrl}", )
+                fetchContributors(item.id,item.contributorsUrl) {responce ->
                     if(responce) {
                         notifyItemChanged(position)
                     } else {

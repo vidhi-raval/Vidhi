@@ -10,7 +10,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
-        app:cardBackgroundColor="#454545"
+        app:cardBackgroundColor="@color/shimmer_bg_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -18,91 +18,131 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clRoot"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tvTitle"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:text="@string/free_programming_books"
-                android:layout_marginStart="10dp"
-                android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivUserProfile"
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:src="@drawable/ic_user"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
-                android:id="@+id/tvDesc"
-                android:layout_width="0dp"
+                android:id="@+id/tvName"
                 android:layout_height="wrap_content"
-                android:text="@string/freeCodeCamp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                app:layout_constraintStart_toStartOf="@id/tvTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/rvContributorsList"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvContributorsList"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/tvDesc"
-                app:layout_constraintStart_toStartOf="@id/tvDesc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/ivStar"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivStar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginStart="10dp"
-                app:tint="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/rvContributorsList"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <TextView
-                android:id="@+id/tvStargazersCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/star_rate"
                 android:textColor="@color/white"
-                android:layout_marginVertical="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
                 android:layout_marginHorizontal="10dp"
-                app:layout_constraintTop_toTopOf="@+id/ivStar"
-                app:layout_constraintStart_toEndOf="@+id/ivStar"
-                app:layout_constraintBottom_toBottomOf="@+id/ivStar"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivFork"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_fork"
-                android:layout_marginStart="10dp"
-                app:tint="@color/white"
-                app:layout_constraintTop_toTopOf="@id/tvStargazersCount"
-                app:layout_constraintBottom_toBottomOf="@id/tvStargazersCount"
-                app:layout_constraintStart_toEndOf="@id/tvStargazersCount"
-                app:layout_constraintEnd_toStartOf="@id/tvWatchersCount"/>
-
+                android:text="@string/free_programming_books"
+                app:layout_constraintTop_toTopOf="@+id/ivUserProfile"
+                app:layout_constraintStart_toEndOf="@id/ivUserProfile"
+                app:layout_constraintBottom_toTopOf="@+id/tvFullName"/>
 
             <TextView
-                android:id="@+id/tvWatchersCount"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvFullName"
                 android:layout_height="wrap_content"
-                android:text="@string/watcher_count"
+                android:layout_width="wrap_content"
                 android:textColor="@color/white"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toTopOf="@+id/tvStargazersCount"
-                app:layout_constraintStart_toEndOf="@id/ivFork"
-                app:layout_constraintBottom_toBottomOf="@id/tvStargazersCount"/>
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/free_programming_books"
+                app:layout_constraintTop_toBottomOf="@+id/tvName"
+                app:layout_constraintStart_toStartOf="@id/tvName"
+                app:layout_constraintBottom_toTopOf="@+id/clExpandLayout"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clExpandLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/tvFullName"
+                app:layout_constraintStart_toStartOf="@id/tvFullName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/freeCodeCamp"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/rvContributorsList"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvContributorsList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDesc"
+                    app:layout_constraintBottom_toTopOf="@+id/ivStar"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    app:tint="@color/white"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/rvContributorsList"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvStargazersCount"/>
+
+                <TextView
+                    android:id="@+id/tvStargazersCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/star_rate"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="@+id/ivStar"
+                    app:layout_constraintStart_toEndOf="@+id/ivStar"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivStar"
+                    app:layout_constraintEnd_toStartOf="@id/ivFork"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivFork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fork"
+                    app:tint="@color/white"
+                    app:layout_constraintTop_toTopOf="@id/tvStargazersCount"
+                    app:layout_constraintBottom_toBottomOf="@id/tvStargazersCount"
+                    app:layout_constraintStart_toEndOf="@id/tvStargazersCount"
+                    app:layout_constraintEnd_toStartOf="@id/tvWatchersCount"/>
+
+
+                <TextView
+                    android:id="@+id/tvWatchersCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/watcher_count"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="@+id/ivFork"
+                    app:layout_constraintStart_toEndOf="@id/ivFork"
+                    app:layout_constraintBottom_toBottomOf="@id/ivFork"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

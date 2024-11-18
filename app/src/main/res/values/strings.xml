@@ -7,4 +7,6 @@
     <string name="freeCodeCamp">freeCodeCamp.org\'s open-source codebase and curriculum. Learn to code for free.</string>
     <string name="star_rate">42449</string>
     <string name="watcher_count">42449</string>
+    <string name="no_internet">No Internet</string>
+    <string name="check_internet">Please check your internet connection</string>
 </resources>
