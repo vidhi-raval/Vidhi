@@ -25,7 +25,7 @@ class ContributorsAdapter(private var context: Context, private var contributors
         with(holder){
             with(contributorsList[position]){
                 Glide.with(context)
-                    .load(avatar_url).into(binding.ivContributors)
+                    .load(avatarUrl).into(binding.ivContributors)
 
             }
         }

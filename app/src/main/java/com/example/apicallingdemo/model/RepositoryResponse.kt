@@ -30,9 +30,19 @@ data class RepositoryResponse(
     val items: List<Repository>
 )
 
+/*
 @Entity(tableName = "contributors")
 data class Contributors(
     @PrimaryKey val id: Int,
     val login: String,
     val avatar_url: String
+)
+*/
+
+@Entity(tableName = "contributors")
+data class Contributors(
+    @PrimaryKey val id: Int,
+    val repoId: Int,
+    val name: String,
+    val avatarUrl: String
 )

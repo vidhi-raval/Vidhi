@@ -18,11 +18,12 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, var fetchContributors:(url:String)->Unit*/): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var expandedPosition = -1
     private var isLoading = true
@@ -62,6 +63,10 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, va
             binding.tvWatchersCount.isVisible = item.isExpanded
             binding.rvContributorsList.isVisible = item.isExpanded
 
+            if (item.isExpanded && mContributorsList.isNotEmpty()) {
+                binding.rvContributorsList.adapter = ContributorsAdapter(mContext, mContributorsList)
+            }
+
             binding.root.setOnClickListener {
                 if (expandedPosition == position) {
                     item.isExpanded = false
@@ -77,7 +82,7 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, va
                 Log.e(TAG, "bind: url:${item.contributors_url}", )
                 fetchContributors(item.id,item.contributors_url) {responce ->
                     if(responce) {
-                        binding.rvContributorsList.adapter = ContributorsAdapter(mContext,mContributorsList)
+                        notifyItemChanged(position)
                     } else {
                         Log.e(TAG, "bind:error in loading data... ", )
                         binding.rvContributorsList.visibility = View.GONE
@@ -110,24 +115,8 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, va
             holder.bind(repoList[position], position)
         }
     }
-   /* private fun fetchContributors(contributorsUrl: String): Boolean {
-        return try {
-            val response = ApiClient.apiService.getContributorsList(contributorsUrl).execute()
-            if (response.isSuccessful) {
-                contributorsList.clear()
-                contributorsList.addAll(response.body()?.contributorsItem?: emptyList())
-                true
-            } else {
-                Log.e(TAG, "fetchContributors: Error fetching data")
-                false
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "fetchContributors: Exception occurred", e)
-            false
-        }
-    }*/
 
-        private fun fetchContributors(id:Int,contributorsUrl: String, callback: (Boolean) -> Unit) {
+     /*   private fun fetchContributors(id:Int,contributorsUrl: String, callback: (Boolean) -> Unit) {
 
             ApiClient.apiService.getContributorsList(contributorsUrl).enqueue(object : Callback<List<Contributors>> {
                 override fun onResponse(
@@ -140,22 +129,63 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>/*, va
                            mContributorsList.addAll(contributorsList)
                            for (contributor in contributorsList) {
                                CoroutineScope(Dispatchers.IO).launch {
-                                   val existingContributorinDB = repoDao.getContributor(id)
-                                   if (existingContributorinDB == null) {
+                                   val existingContributorInDB = repoDao.getContributor(id)
+                                   if (existingContributorInDB == null) {
                                        repoDao.insertContributor(contributor)
                                    }
                                }
                            }
                        }
                         callback(true)
-                    } else callback(false)
+                    } else {
+                        Log.e(TAG, "onResponse: response faild:${response.errorBody()?.string()}", )
+                        callback(false)
+                    }
                 }
 
                 override fun onFailure(call: Call<List<Contributors>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: api calling faild:${t.message}", )
                     callback(false)
                 }
             })
+        }*/
+
+    fun fetchContributors(id: Int, contributorsUrl: String, callback: (Boolean) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val cachedContributors = repoDao.getContributorsForRepo(id)
+            if (cachedContributors.isNotEmpty()) {
+                mContributorsList.clear()
+                mContributorsList.addAll(cachedContributors)
+                withContext(Dispatchers.Main) {
+                    callback(true)
+                }
+            } else {
+                ApiClient.apiService.getContributorsList(contributorsUrl).enqueue(object : Callback<List<Contributors>> {
+                    override fun onResponse(call: Call<List<Contributors>>, response: Response<List<Contributors>>) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { contributorsList ->
+                                mContributorsList.clear()
+                                mContributorsList.addAll(contributorsList)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    contributorsList.forEach { repoDao.insertContributor(it) }
+                                }
+                            }
+                            callback(true)
+                        } else {
+                            Log.e(TAG, "onResponse: response faild:${response.errorBody()?.string()}", )
+                            callback(false)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<Contributors>>, t: Throwable) {
+                        Log.e(TAG, "onFailure: api calling faild:${t.message}", )
+                        callback(false)
+                    }
+                })
+            }
         }
+    }
+
 
     fun filterList(filterlist: ArrayList<Repository>) {
         repoList = filterlist

@@ -3,4 +3,8 @@
     <string name="trending">Trending</string>
     <string name="retry">Retry</string>
     <string name="search_repo">search repo</string>
+    <string name="free_programming_books">free-programming-books</string>
+    <string name="freeCodeCamp">freeCodeCamp.org\'s open-source codebase and curriculum. Learn to code for free.</string>
+    <string name="star_rate">42449</string>
+    <string name="watcher_count">42449</string>
 </resources>
