@@ -27,7 +27,6 @@ class TravelSummaryViewModel:ViewModel() {
                     packageName = "com.uffizio.trakzee",
                     deviceType = "android",
                     versionInfo = "2.74.0",
-                    userIdDuplicate = 13533,
                     fromDate = "19-11-2024 00:00:00",
                     toDate = "19-11-2024 13:52:01",
                     vehicleId = "172021,165016,165019",
@@ -38,13 +37,13 @@ class TravelSummaryViewModel:ViewModel() {
                     entityId = 0,
                     distanceFilterCondition = null,
                     distanceFilterValue = null,)
-                if (response.isSuccessful && response.body() != null) {
+                if (response.isSuccessful) {
                     _travelSummary.postValue(response.body()?.data)
                 } else {
-                    Log.e("API Error", "Error: ${response.code()}")
+                    Log.e(mTAG, "Error: ${response.code()}")
                 }
             } catch (e: Exception) {
-                Log.e("API Error", "Exception: ${e.message}")
+                Log.e(mTAG, "Exception: ${e.message}")
             }
         }
     }

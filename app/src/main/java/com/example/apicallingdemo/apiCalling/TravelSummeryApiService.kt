@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TravelSummeryApiService {
-    @GET("mobileservice")
+    @GET("?method=getTravelSummary")
     suspend fun getTravelSummary(
         @Query("method") method: String = "getTravelSummary",
         @Query("UserId") userId: Int,
@@ -15,7 +15,6 @@ interface TravelSummeryApiService {
         @Query("PackageName") packageName: String,
         @Query("devicetype") deviceType: String,
         @Query("VersionInfo") versionInfo: String,
-        @Query("userId") userIdDuplicate: Int,
         @Query("fromDate") fromDate: String,
         @Query("toDate") toDate: String,
         @Query("vehicleId") vehicleId: String,
