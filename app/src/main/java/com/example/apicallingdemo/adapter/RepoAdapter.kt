@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.apicallingdemo.apiCalling.ApiClient
 import com.example.apicallingdemo.database.RepositoryDatabase
 import com.example.apicallingdemo.model.Repository
@@ -26,7 +27,8 @@ import retrofit2.Response
 class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var expandedPosition = -1
-    private var isLoading = true
+//    private var isLoading = true
+    private var isLoading = false
     private var TAG = javaClass.simpleName
     var repoDatabase = RepositoryDatabase.getInstance(mContext)
     var repoDao = repoDatabase.repositoryDao()
@@ -38,12 +40,17 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
     }
 
     fun setLoading(isLoading: Boolean) {
+        Log.e(TAG, "setLoading:isLoading:$isLoading ", )
         this.isLoading = isLoading
         notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isLoading) VIEW_TYPE_SHIMMER else VIEW_TYPE_DATA
+        return if (isLoading) {
+            Log.e(TAG, "getItemViewType: isLoading:$isLoading", )
+            VIEW_TYPE_SHIMMER
+        }
+            else VIEW_TYPE_DATA
     }
     fun updateData(newRepositories: List<Repository>) {
         repoList.clear()
@@ -53,18 +60,14 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
     inner class RepositoryViewHolder(private val binding: LayoutItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Repository, position: Int) {
             binding.tvName.text = item.name
-            binding.tvFullName.text = item.fullName
+            binding.tvFullName.text = item.full_name
             binding.tvDesc.text = item.description
-            binding.tvStargazersCount.text = item.stargazersCount.toString()
-            binding.tvWatchersCount.text = item.watchersCount.toString()
+            binding.tvStargazersCount.text = item.stargazers_count.toString()
+            binding.tvWatchersCount.text = item.watchers_count.toString()
+            Glide.with(mContext)
+                .load(item.owner.avatar_url).into(binding.ivUserProfile)
 
             binding.clExpandLayout.isVisible = item.isExpanded
-
-//            binding.ivStar.isVisible = item.isExpanded
-//            binding.tvStargazersCount.isVisible = item.isExpanded
-//            binding.ivFork.isVisible = item.isExpanded
-//            binding.tvWatchersCount.isVisible = item.isExpanded
-//            binding.rvContributorsList.isVisible = item.isExpanded
 
             if (item.isExpanded && mContributorsList.isNotEmpty()) {
                 binding.rvContributorsList.adapter = ContributorsAdapter(mContext, mContributorsList)
@@ -82,9 +85,11 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
                     item.isExpanded = true
                     expandedPosition = position
                 }
-                Log.e(TAG, "bind: url:${item.contributorsUrl}", )
-                fetchContributors(item.id,item.contributorsUrl) {responce ->
+                Log.e(TAG, "bind: url:${item.contributors_url}", )
+
+                fetchContributors(item.id,item.contributors_url) {responce ->
                     if(responce) {
+                        binding.rvContributorsList.visibility = View.VISIBLE
                         notifyItemChanged(position)
                     } else {
                         Log.e(TAG, "bind:error in loading data... ", )
@@ -110,7 +115,7 @@ class RepoAdapter(var mContext:Context,var repoList: ArrayList<Repository>): Rec
     }
 
     override fun getItemCount(): Int {
-         return if (isLoading) 29 else repoList.size
+        return if (isLoading) 29 else repoList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

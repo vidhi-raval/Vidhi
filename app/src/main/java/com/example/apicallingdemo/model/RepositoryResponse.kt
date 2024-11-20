@@ -11,19 +11,19 @@ data class Repository(
     val name: String,
 
     @ColumnInfo(name = "full_name")
-    val fullName: String,
+    val full_name: String,
 
     @ColumnInfo(name = "contributors_url")
-    val contributorsUrl: String,
+    val contributors_url: String,
 
     @ColumnInfo(name = "description")
     val description: String?,
 
     @ColumnInfo(name = "stargazers_count")
-    val stargazersCount: Int,
+    val stargazers_count: Int,
 
     @ColumnInfo(name = "watchers_count")
-    val watchersCount: Int,
+    val watchers_count: Int,
 
     var isExpanded: Boolean = false,
 
@@ -37,7 +37,7 @@ data class Owner(
     @ColumnInfo(name = "login")
     val login: String,
     @ColumnInfo(name = "avatar_url")
-    val avatarUrl: String
+    val avatar_url: String
 )
 
 data class RepositoryResponse(
@@ -49,5 +49,5 @@ data class Contributors(
     @PrimaryKey val id: Int,
     val repoId: Int,
     @ColumnInfo(name = "avatar_url")
-    val avatarUrl: String
+    val avatar_url: String
 )

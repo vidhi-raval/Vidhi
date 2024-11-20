@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="15dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clCustom"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/rounded_textview_ui"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvDistance">
+
+                <TextView
+                    android:id="@+id/tvVehicleTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vehicle_no_4_vehicle_no_5ghgfj"
+                    android:textColor="@color/blue_text_color"
+                    android:layout_marginStart="14dp"
+                    android:singleLine="true"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="18sp"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_15493"
+                android:textSize="21sp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/blue_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintEnd_toStartOf="@id/tvKM"
+                app:layout_constraintTop_toTopOf="@id/clCustom"
+                app:layout_constraintBottom_toBottomOf="@+id/clCustom"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvKM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="9dp"
+                android:text="@string/km"
+                android:textSize="16sp"
+                android:textColor="#007BFF"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toTopOf="@id/tvDistance"
+                app:layout_constraintEnd_toStartOf="@id/ivGo"
+                app:layout_constraintBottom_toBottomOf="@+id/tvDistance"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivGo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_go"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toTopOf="@id/tvKM"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tvKM"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvRunning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/running"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/grey_text_color"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toBottomOf="@+id/clCustom"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/pbRunning"/>
+
+            <ProgressBar
+                android:id="@+id/pbRunning"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="50"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:progressDrawable="@drawable/custom_progress_bar"
+                app:layout_constraintTop_toBottomOf="@+id/tvRunning"
+                app:layout_constraintStart_toStartOf="@+id/tvRunning"
+                app:layout_constraintEnd_toEndOf="@+id/tvRunning"
+                app:layout_constraintBottom_toTopOf="@id/viewOne"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop"
+                android:textSize="16sp"
+                android:textColor="@color/grey_text_color"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toTopOf="@id/tvRunning"
+                app:layout_constraintBottom_toBottomOf="@id/tvRunning"
+                app:layout_constraintStart_toEndOf="@id/tvRunning"
+                app:layout_constraintEnd_toStartOf="@id/tvIdle"/>
+
+            <ProgressBar
+                android:id="@+id/pbStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/custom_progress_bar"
+                app:layout_constraintBottom_toBottomOf="@+id/pbRunning"
+                app:layout_constraintEnd_toEndOf="@+id/tvStop"
+                app:layout_constraintStart_toStartOf="@+id/tvStop"
+                app:layout_constraintTop_toTopOf="@+id/pbRunning" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvIdle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/idle"
+                android:textSize="16sp"
+                android:textColor="@color/grey_text_color"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toTopOf="@id/tvStop"
+                app:layout_constraintBottom_toBottomOf="@id/tvStop"
+                app:layout_constraintStart_toEndOf="@id/tvStop"
+                app:layout_constraintEnd_toStartOf="@id/tvInactive"/>
+
+            <ProgressBar
+                android:id="@+id/pbIdle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/custom_progress_bar"
+                app:layout_constraintBottom_toBottomOf="@+id/pbStop"
+                app:layout_constraintEnd_toEndOf="@+id/tvIdle"
+                app:layout_constraintStart_toStartOf="@+id/tvIdle"
+                app:layout_constraintTop_toTopOf="@+id/pbStop" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvInactive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inavtive"
+                android:textSize="16sp"
+                android:textColor="@color/grey_text_color"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toTopOf="@id/tvIdle"
+                app:layout_constraintBottom_toBottomOf="@id/tvIdle"
+                app:layout_constraintStart_toEndOf="@id/tvIdle"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ProgressBar
+                android:id="@+id/pbInactive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/custom_progress_bar"
+                app:layout_constraintBottom_toBottomOf="@+id/pbIdle"
+                app:layout_constraintEnd_toEndOf="@+id/tvInactive"
+                app:layout_constraintStart_toStartOf="@+id/tvInactive"
+                app:layout_constraintTop_toTopOf="@+id/pbIdle" />
+
+            <View
+                android:id="@+id/viewOne"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/pbRunning"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvSTartLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/nbsfdvjd_jfjjfrefr_jfjkerkfjkre_jerfkej_ne"
+                android:textColor="@color/light_black_text_color"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewOne" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl0doMeterBorderGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginVertical="13dp"
+                android:background="@color/green_bg"
+                app:layout_constraintBottom_toTopOf="@+id/tvEndLocation"
+                app:layout_constraintEnd_toStartOf="@id/ivDevider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSTartLocation">
+
+                <TextView
+                    android:id="@+id/tvKM1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_0"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvKM2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_2"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM1"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM3"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM1"
+                    app:layout_constraintTop_toTopOf="@id/tvKM1" />
+
+                <TextView
+                    android:id="@+id/tvKM3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_2"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM2"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM4"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM2"
+                    app:layout_constraintTop_toTopOf="@id/tvKM2" />
+
+                <TextView
+                    android:id="@+id/tvKM4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_0"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM3"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM5"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM3"
+                    app:layout_constraintTop_toTopOf="@id/tvKM3" />
+
+                <TextView
+                    android:id="@+id/tvKM5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_2"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM4"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM6"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM4"
+                    app:layout_constraintTop_toTopOf="@id/tvKM4" />
+
+                <TextView
+                    android:id="@+id/tvKM6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_2"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM5"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM7"
+                    app:layout_constraintStart_toEndOf="@id/tvKM5"
+                    app:layout_constraintTop_toTopOf="@id/tvKM5" />
+
+                <TextView
+                    android:id="@+id/tvKM7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/_2"
+                    android:textColor="@color/green_text_color"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM6"
+                    app:layout_constraintTop_toTopOf="@id/tvKM6" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivDevider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_devider"
+                app:layout_constraintStart_toEndOf="@id/cl0doMeterBorderGreen"
+                app:layout_constraintTop_toTopOf="@id/cl0doMeterBorderGreen"
+                app:layout_constraintBottom_toBottomOf="@id/cl0doMeterBorderGreen"
+                app:layout_constraintEnd_toStartOf="@id/cl0doMeterBorderGrey"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl0doMeterBorderGrey"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginVertical="13dp"
+                android:background="@color/light_gray"
+                app:layout_constraintBottom_toTopOf="@+id/tvEndLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivDevider"
+                app:layout_constraintTop_toBottomOf="@id/tvSTartLocation">
+
+                <TextView
+                    android:id="@+id/tvKM1End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM2End"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvKM2End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM1End"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM3End"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM1End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM1End" />
+
+                <TextView
+                    android:id="@+id/tvKM3End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM2End"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM4End"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM2End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM2End" />
+
+                <TextView
+                    android:id="@+id/tvKM4End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/_2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM3End"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM5End"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM3End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM3End" />
+
+                <TextView
+                    android:id="@+id/tvKM5End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM4End"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM6End"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM4End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM4End" />
+
+                <TextView
+                    android:id="@+id/tvKM6End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM5End"
+                    app:layout_constraintEnd_toStartOf="@id/tvKM7End"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM5End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM5End" />
+
+                <TextView
+                    android:id="@+id/tvKM7End"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@id/tvKM6End"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvKM6End"
+                    app:layout_constraintTop_toTopOf="@id/tvKM6End" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvEndLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:textSize="16sp"
+                android:textColor="@color/light_black_text_color"
+                android:text="nbsfdvjd jfjjfrefr jfjkerkfjkre jerfkej (NE)"
+                app:layout_constraintEnd_toEndOf="@+id/tvSTartLocation"
+                app:layout_constraintStart_toStartOf="@+id/tvSTartLocation"
+                app:layout_constraintTop_toBottomOf="@+id/cl0doMeterBorderGreen" />
+
+            <View
+                android:id="@+id/viewTwo"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvEndLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivAvg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_avg"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/viewTwo"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAvgTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/avg"
+                android:textSize="15sp"
+                android:textColor="@color/grey_text_color"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintStart_toEndOf="@id/ivAvg"
+                app:layout_constraintTop_toTopOf="@id/ivAvg"
+                app:layout_constraintBottom_toBottomOf="@id/ivAvg"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAvgValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_60_km_h"
+                android:textColor="@color/light_black_text_color"
+                android:layout_marginStart="5dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintStart_toEndOf="@id/tvAvgTitle"
+                app:layout_constraintTop_toTopOf="@id/tvAvgTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvAvgTitle"/>
+
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@id/ivAvg"
+                app:layout_constraintStart_toStartOf="@id/ivAvg"
+                app:layout_constraintEnd_toEndOf="@id/ivAvg"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDriverName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Traverl_name"
+                android:textSize="15sp"
+                android:textColor="@color/light_black_text_color"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintStart_toEndOf="@id/ivUser"
+                app:layout_constraintTop_toTopOf="@id/ivUser"
+                app:layout_constraintBottom_toBottomOf="@id/ivUser"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_max"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="@id/ivAvg"
+                app:layout_constraintBottom_toBottomOf="@id/ivAvg"
+                app:layout_constraintStart_toEndOf="@id/tvAvgValue"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMaxTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max"
+                android:textSize="15sp"
+                android:textColor="@color/grey_text_color"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintStart_toEndOf="@id/ivMax"
+                app:layout_constraintTop_toTopOf="@id/ivMax"
+                app:layout_constraintBottom_toBottomOf="@id/ivMax"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMaxValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60 km/h"
+                android:textSize="15sp"
+                android:textColor="@color/light_black_text_color"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintStart_toEndOf="@id/tvMaxTitle"
+                app:layout_constraintTop_toTopOf="@id/tvMaxTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvMaxTitle"/>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

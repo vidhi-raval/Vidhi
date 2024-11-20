@@ -56,6 +56,7 @@ class FetchRepositoriesWorker(private val context: Context, workerParams: Worker
             if (response.isSuccessful) {
                 updatedRepoList.clear()
                 updatedRepoList.addAll(response.body()?.items ?: emptyList())
+                Log.e(TAG, "fetchRepositories:responce:${response.body()?.items} ", )
                 true
             } else {
                 Log.e(TAG, "fetchRepositories: Error fetching data")

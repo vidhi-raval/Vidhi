@@ -1,6 +1,5 @@
 package com.example.apicallingdemo.apiCalling
 
-import com.example.apicallingdemo.apiCalling.ApiClient.apiService
 import com.example.apicallingdemo.model.Contributors
 import com.example.apicallingdemo.model.RepositoryResponse
 import retrofit2.Call
