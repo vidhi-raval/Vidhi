@@ -9,6 +9,10 @@
     <color name="light_gray">#E9EAEE</color>
     <color name="green">#34C780</color>
     <color name="green_bg">#C7FFD5</color>
+    <color name="seekbar_green_color">#34C759</color>
+    <color name="seekbar_red_color">#FF3A30</color>
+    <color name="seekbar_orange_color">#FF9500</color>
+    <color name="seekbar_blue_color">#007BFF</color>
     <color name="green_text_color">#24BF5A</color>
     <color name="grey_text_color">#837E9A</color>
     <color name="light_black_text_color">#1C134A</color>

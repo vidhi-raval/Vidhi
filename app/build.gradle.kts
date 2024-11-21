@@ -87,6 +87,9 @@ dependencies {
     implementation (libs.glide.v4110)
     annotationProcessor (libs.compiler.v4110)
 
+    implementation (libs.logging.interceptor)
+
+
 
 
     testImplementation(libs.junit)

@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitClientTravel {
-    private const val BASE_URL = "http://192.168.0.81:8091/mobileservice/"
+    private const val BASE_URL = "http://192.168.0.81:8091/"
 
     val retrofitTravel: Retrofit by lazy {
         Retrofit.Builder()
@@ -20,3 +20,5 @@ object ApiClientTravelSummery {
         RetrofitClientTravel.retrofitTravel.create(TravelSummeryApiService::class.java)
     }
 }
+
+
