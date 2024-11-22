@@ -11,7 +11,12 @@
     <style name="Theme.ApiCallingDemo" parent="Base.Theme.ApiCallingDemo" />
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- ActionBar background -->
+       <!-- <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="windowActionModeOverlay">false</item>
+        <item name="windowNoTitle">true</item>-->
+
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
 
@@ -26,11 +31,11 @@
     <style name="WhiteActionBar" parent="Widget.AppCompat.ActionBar">
         <item name="background">@color/white</item> <!-- Background color -->
         <item name="titleTextStyle">@style/ActionBarTitleText</item> <!-- Title text color -->
-    </style>
+            </style>
 
-    <!-- Define custom title text style -->
+
     <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/black</item> <!-- Title text color -->
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

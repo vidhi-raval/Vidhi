@@ -6,12 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apicallingdemo.apiCalling.ApiClientTravelSummery.apiServiceTravel
-import com.example.apicallingdemo.model.TravelSummaryResponse
 import com.example.apicallingdemo.model.VehicleSummary
-import com.example.apicallingdemo.utils.vehicleId
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import retrofit2.http.Query
 
 class TravelSummaryViewModel:ViewModel() {
     private val mTAG = javaClass.simpleName
@@ -30,7 +26,7 @@ class TravelSummaryViewModel:ViewModel() {
                     deviceType = "android",
                     versionInfo = "2.74.0",
                     reAdduserId = 13533,
-                    fromDate = "19-11-2024 00:00:00",
+                    fromDate = "21-10-2024 00:00:00",
                     toDate = "21-11-2024 13:52:01",
                     vehicleIds = vehicleId,
                     action = "Filter",

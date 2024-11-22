@@ -13,6 +13,7 @@
     <string name="km">km</string>
     <string name="value_km">15493</string>
     <string name="vehicle_no_4_vehicle_no_5ghgfj">Vehicle No. 4 - Vehicle No. 5ghgfj...</string>
+    <string name="header_name">Travel Summery</string>
     <string name="_15493">15493</string>
     <string name="running">Running</string>
     <string name="stop">Stop</string>
@@ -26,4 +27,5 @@
     <string name="Traverl_name">hj jhdjsa</string>
     <string name="max">Max</string>
     <string name="_12_31_hrs">12:31 hrs</string>
+    <string name="search">Search</string>
 </resources>

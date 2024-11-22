@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="shimmer_placeholder">#807B7A</color>
     <color name="shimmer_bg_color">#454545</color>
-    <color name="blue_background">#C5E0FFFF</color>
+    <color name="blue_background">#C5E0FF</color>
     <color name="blue_text_color">#007BFF</color>
     <color name="light_gray">#E9EAEE</color>
     <color name="green">#34C780</color>
@@ -16,4 +16,5 @@
     <color name="green_text_color">#24BF5A</color>
     <color name="grey_text_color">#837E9A</color>
     <color name="light_black_text_color">#1C134A</color>
+    <color name="line_color">#898989</color>
 </resources>
