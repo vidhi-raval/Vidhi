@@ -28,4 +28,10 @@
     <string name="max">Max</string>
     <string name="_12_31_hrs">12:31 hrs</string>
     <string name="search">Search</string>
+    <string name="data_range">Data Range</string>
+    <string name="no_data_found">No data found</string>
+    <string name="filter">Filter</string>
+    <string name="more">More</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="custom">Custom</string>
 </resources>

@@ -6,16 +6,17 @@
         android:title="@string/search"
         android:icon="@drawable/ic_search"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
     <item
         android:id="@+id/action_filter"
-        android:title="@string/search"
+        android:title="@string/filter"
         android:icon="@drawable/ic_filter"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_sub_menu"
-        android:title="@string/search"
+        android:title="@string/more"
         android:icon="@drawable/ic_more"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />

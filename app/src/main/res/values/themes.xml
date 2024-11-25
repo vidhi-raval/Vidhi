@@ -11,11 +11,11 @@
     <style name="Theme.ApiCallingDemo" parent="Base.Theme.ApiCallingDemo" />
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-       <!-- <item name="windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">false</item>
         <item name="android:windowIsFloating">false</item>
         <item name="windowActionModeOverlay">false</item>
-        <item name="windowNoTitle">true</item>-->
+        <item name="windowNoTitle">true</item>
 
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
@@ -36,6 +36,23 @@
 
     <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="font_style_status_title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey_text_color</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="hours_title_theme" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/light_black_text_color</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="DialogSlideAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
 
 </resources>

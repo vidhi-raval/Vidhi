@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
-            <solid android:color="#D3D3D3" />
+            <solid android:color="@color/light_gray" />
         </shape>
     </item>
     <!-- Progress section -->
@@ -12,7 +12,7 @@
         <clip>
             <shape android:shape="rectangle">
                 <corners android:radius="8dp" />
-                <solid android:color="#FF6200EE" />
+                <solid android:color="@color/blue_text_color" />
             </shape>
         </clip>
     </item>

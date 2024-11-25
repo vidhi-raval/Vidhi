@@ -55,7 +55,6 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
                 mBinding.tvIdleTime.text = "${currentItem.IDELTIME} hrs"
                 mBinding.tvInActiveTime.text ="${currentItem.INACTIVETIME} hrs"
 
-
                 mBinding.tvStartOdoMeterDigit.text = currentItem.start_odometer.toString().padStart(7, '0')
                 mBinding.tvEndOdoMeterDigit.text = currentItem.end_odometer.toString().padStart(7, '0')
 
@@ -91,5 +90,10 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
             e.printStackTrace()
             0
         }
+    }
+
+    fun filterList(filterlist: ArrayList<VehicleSummary>) {
+        travelerList = filterlist
+        notifyDataSetChanged()
     }
 }
