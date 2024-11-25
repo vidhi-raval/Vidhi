@@ -1,14 +1,16 @@
 package com.example.apicallingdemo.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apicallingdemo.databinding.LayoutDataRangeBinding
-import com.example.apicallingdemo.databinding.LayoutTravelSummeryItemBinding
-import com.example.apicallingdemo.model.VehicleSummary
+import com.example.apicallingdemo.utils.SharedPrefHelper
 
-class DataRangeAdapter(private var dataRangeList:ArrayList<String>): RecyclerView.Adapter<DataRangeAdapter.ViewHolder>()  {
+class DataRangeAdapter(private var dataRangeList:ArrayList<String>, var itemClick:(pos:Int) -> Unit):
+    RecyclerView.Adapter<DataRangeAdapter.ViewHolder>()  {
+
+    var pos = SharedPrefHelper.getInt(SharedPrefHelper.dataRangeKey,0)
 
     inner class ViewHolder( val mBinding: LayoutDataRangeBinding) : RecyclerView.ViewHolder(mBinding.root)
 
@@ -21,6 +23,16 @@ class DataRangeAdapter(private var dataRangeList:ArrayList<String>): RecyclerVie
         val currentItem = dataRangeList[position]
         with(holder) {
            mBinding.tvCustom.text = currentItem
+            mBinding.root.setOnClickListener {
+                pos = position
+                notifyDataSetChanged()
+                SharedPrefHelper.saveInt(SharedPrefHelper.dataRangeKey,position)
+                itemClick.invoke(position)
+
+            }
+            if (pos == position) mBinding.ivSelected.isVisible = true
+            else mBinding.ivSelected.isVisible = false
+
         }
     }
 

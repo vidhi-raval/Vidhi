@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.example.apicallingdemo.adapter.TravelSummeryAdapter
 import com.example.apicallingdemo.databinding.ActivityTravelSummeryBinding
 import com.example.apicallingdemo.databinding.LayoutRangeDialogBinding
 import com.example.apicallingdemo.model.VehicleSummary
+import com.example.apicallingdemo.utils.SharedPrefHelper
 import com.example.apicallingdemo.viewModel.TravelSummaryViewModel
 
 class TravelSummeryActivity : AppCompatActivity() {
@@ -28,6 +30,8 @@ class TravelSummeryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityTravelSummeryBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
+        SharedPrefHelper.init(this)
 
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.title = getString(R.string.header_name)
@@ -104,7 +108,7 @@ class TravelSummeryActivity : AppCompatActivity() {
     }
 
     private fun showDialog(title: String) {
-        val dialog = Dialog(this)
+        val dialog = Dialog(this, R.style.FullScreenDialog)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
 
@@ -118,10 +122,7 @@ class TravelSummeryActivity : AppCompatActivity() {
 
         dialog.window?.attributes?.windowAnimations = R.style.DialogSlideAnimation
 //        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        setSupportActionBar(mBinding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+        dialog.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
 
         var dataRangeList = ArrayList<String>()
         dataRangeList.add("Custom")
@@ -135,7 +136,13 @@ class TravelSummeryActivity : AppCompatActivity() {
         dataRangeList.add("This Month")
         dataRangeList.add("Last Month")
 
-        mDialogBinding.rvDataRange.adapter = DataRangeAdapter(dataRangeList)
+        mDialogBinding.rvDataRange.adapter = DataRangeAdapter(dataRangeList) { pos: Int ->
+
+        }
+
+        mDialogBinding.ivClose.setOnClickListener {
+            dialog.cancel()
+        }
 
         dialog.show()
     }
