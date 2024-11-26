@@ -34,4 +34,9 @@
     <string name="more">More</string>
     <string name="yesterday">Yesterday</string>
     <string name="custom">Custom</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="schedule">Schedule</string>
+    <string name="export">Export</string>
+    <string name="view">View</string>
 </resources>

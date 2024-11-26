@@ -1,4 +1,4 @@
-package com.example.apicallingdemo.ui
+package com.example.apicallingdemo.ui.activity
 
 import android.os.Bundle
 import android.os.Handler

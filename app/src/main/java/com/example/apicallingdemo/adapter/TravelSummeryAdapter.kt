@@ -44,6 +44,12 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
 
 //                mBinding.tvDistance.text = currentItem.distance_unit
 
+                val maxHours = if (currentItem.working_days != "0") {
+                    currentItem.working_days.toInt() * 24
+                } else {
+                    24
+                }
+
                 mBinding.tvKM.text = currentItem.distance_unit
                 mBinding.tvSTartLocation.text = currentItem.start_location
                 mBinding.tvEndLocation.text = currentItem.end_location
@@ -58,10 +64,10 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
                 mBinding.tvStartOdoMeterDigit.text = currentItem.start_odometer.toString().padStart(7, '0')
                 mBinding.tvEndOdoMeterDigit.text = currentItem.end_odometer.toString().padStart(7, '0')
 
-                setProgressBasedOnHours(mBinding.pbRunning,parseHoursFromTime(currentItem.RUNNINGTIME),24)
-                setProgressBasedOnHours(mBinding.pbStop,parseHoursFromTime(currentItem.STOPTIME),24)
-                setProgressBasedOnHours(mBinding.pbIdle,parseHoursFromTime(currentItem.IDELTIME),24)
-                setProgressBasedOnHours(mBinding.pbInactive,parseHoursFromTime(currentItem.INACTIVETIME),24)
+                setProgressBasedOnHours(mBinding.pbRunning,parseHoursFromTime(currentItem.RUNNINGTIME),maxHours)
+                setProgressBasedOnHours(mBinding.pbStop,parseHoursFromTime(currentItem.STOPTIME),maxHours)
+                setProgressBasedOnHours(mBinding.pbIdle,parseHoursFromTime(currentItem.IDELTIME),maxHours)
+                setProgressBasedOnHours(mBinding.pbInactive,parseHoursFromTime(currentItem.INACTIVETIME),maxHours)
 
                 changeProgressColor(mBinding.pbRunning,R.color.seekbar_green_color,mContext)
                 changeProgressColor(mBinding.pbStop,R.color.seekbar_red_color,mContext)
@@ -76,6 +82,7 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
         return travelerList.size
     }
 
+
     private fun setProgressBasedOnHours(progressBar: ProgressBar, hours: Int, maxHours: Int) {
         val progress = (hours.toFloat() / maxHours * progressBar.max).toInt()
         progressBar.progress = progress
@@ -84,7 +91,7 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
     private fun parseHoursFromTime(time: String): Int {
         return try {
             val parts = time.split(":")
-            val hours = parts[0].toInt() // Extract hours
+            val hours = parts[0].toInt()
             hours
         } catch (e: Exception) {
             e.printStackTrace()
@@ -92,8 +99,8 @@ class TravelSummeryAdapter(private var mContext: Context, private var travelerLi
         }
     }
 
-    fun filterList(filterlist: ArrayList<VehicleSummary>) {
-        travelerList = filterlist
+    fun filterList(filterList: ArrayList<VehicleSummary>) {
+        travelerList = filterList
         notifyDataSetChanged()
     }
 }

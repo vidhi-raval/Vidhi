@@ -19,6 +19,24 @@
         android:title="@string/more"
         android:icon="@drawable/ic_more"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" >
+        <menu>
+            <item
+                android:id="@+id/schedule"
+                android:title="@string/schedule"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/export"
+                android:title="@string/export"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/view"
+                android:title="@string/view"
+                app:showAsAction="never" />
+        </menu>
+
+
+
+    </item>
 
 </menu>
